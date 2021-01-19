@@ -40,14 +40,21 @@ layout: default
       currentSection,
       main = document.querySelectorAll("main")[0],
       nav = document.querySelectorAll("nav")[0],
-      mode = 'left';
+      mode = 'left',
+      beforeChange = 25;
 
 window.addEventListener('scroll', function (e) {
-  mode = 'left';
+  if (beforeChange <= 0) {
+    beforeChange = 25;
+    mode = 'left';
+  }
 });
 
 nav.addEventListener('scroll', function (e) {
-  mode = 'right';
+  if (beforeChange <= 0) {
+    beforeChange = 25;
+    mode = 'right';
+  }
 });
 
 function findMainIndex () {
@@ -70,12 +77,14 @@ function findNavIndex () {
 }
 
 function syncMain () {
-  var position = 0;
+  var position = 0,
+      target = 0;
   for (var i = 0; i < currentIndex - 1; i++) {
     var section = sections[i];
     position += section.clientHeight;
   }
-  window.scrollTo(0, position);
+  target = window.scrollY - Math.floor((window.scrollY - position) / 2);
+  window.scrollTo(0, target);
 }
 
 function syncNav() {
@@ -90,6 +99,7 @@ function positionize () {
     currentIndex = findNavIndex();
     syncMain();
   }
+  beforeChange -= 1;
   currentSection = sections[currentIndex];
   if (currentSection) {
     hudCurrent.innerHTML = mode + ' | ' + currentIndex + ': ' + currentSection.id;
