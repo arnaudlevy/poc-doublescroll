@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en-US">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta charset="utf-8">
+    <title> - </title>
+    <link rel="stylesheet" href="/assets/css/main.css">
+  </head>
+  <body>
+    <nav>
+  <ul>
+    <li>1920</li>
+    <li>1930</li>
+    <li>1950</li>
+    <li>1955</li>
+    <li>1970</li>
+  </ul>
+</nav>
+<main>
+  <section id="year-1920" style="height: 500px">
+    <h2>1920</h2>
+  </section>
+  <section id="year-1930" style="height: 1000px; background: #CCCCCC">
+    <h2>1930</h2>
+  </section>
+  <section id="year-1950" style="height: 200px">
+    <h2>1950</h2>
+  </section>
+  <section id="year-1955" style="height: 1300px; background: #CCCCCC">
+    <h2>1955</h2>
+  </section>
+  <section id="year-1970" style="height: 700px">
+    <h2>1970</h2>
+  </section>
+</main>
+<div class="hud">
+  <hr>
+  <div class="current"></div>
+</div>
+
+<script type="text/javascript">
+  var sections = document.querySelectorAll("section"),
+      center = window.innerHeight / 2,
+      hudCurrent = document.getElementsByClassName('current')[0],
+      currentIndex,
+      currentSection,
+      main = document.querySelectorAll("main")[0],
+      nav = document.querySelectorAll("nav")[0],
+      mode = 'left';
+
+window.addEventListener('scroll', function (e) {
+  mode = 'left';
+});
+
+nav.addEventListener('scroll', function (e) {
+  mode = 'right';
+});
+
+function findMainIndex () {
+  var position = 0;
+  for (var i = 0; i < sections.length; i++) {
+    var section = sections[i];
+    position += section.clientHeight;
+    if (window.scrollY < position) {
+      return i;
+    }
+  }
+}
+
+function syncMain () {
+  var position = 0;
+  for (var i = 0; i < currentIndex - 1; i++) {
+    var section = sections[i];
+    position += section.clientHeight;
+  }
+  window.scrollTo(0, position);
+}
+
+function findNavIndex () {
+  return Math.ceil(nav.scrollTop / 20);
+}
+
+function syncNav() {
+  nav.scrollTop = currentIndex * 20;
+}
+
+function positionize () {
+  if (mode == 'left') {
+    currentIndex = findMainIndex();
+    syncNav();
+  } else {
+    currentIndex = findNavIndex();
+    syncMain();
+  }
+  currentSection = sections[currentIndex];
+  hudCurrent.innerHTML = mode + ' | ' + currentIndex + ': ' + currentSection.id;
+  requestAnimationFrame(positionize);
+}
+requestAnimationFrame(positionize);
+</script>
+
+  </body>
+</html>
