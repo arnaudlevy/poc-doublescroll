@@ -59,10 +59,14 @@ function findMainIndex () {
       return i;
     }
   }
+  return sections.length - 1;
 }
 
 function findNavIndex () {
-  return Math.ceil(nav.scrollTop / 20);
+  var index = Math.ceil(nav.scrollTop / 20)
+  index = Math.max(0, index);
+  index = Math.min(index, sections.length);
+  return index;
 }
 
 function syncMain () {
