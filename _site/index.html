@@ -3,7 +3,7 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
-    <title> - </title>
+    <title>POC Double Scroll</title>
     <link rel="stylesheet" href="assets/css/main.css">
     <script src="assets/js/tween.umd.js"></script>
   </head>
@@ -68,6 +68,10 @@ function findMainIndex () {
   }
 }
 
+function findNavIndex () {
+  return Math.ceil(nav.scrollTop / 20);
+}
+
 function syncMain () {
   var position = 0;
   for (var i = 0; i < currentIndex - 1; i++) {
@@ -75,10 +79,6 @@ function syncMain () {
     position += section.clientHeight;
   }
   window.scrollTo(0, position);
-}
-
-function findNavIndex () {
-  return Math.ceil(nav.scrollTop / 20);
 }
 
 function syncNav() {
@@ -94,7 +94,9 @@ function positionize () {
     syncMain();
   }
   currentSection = sections[currentIndex];
-  hudCurrent.innerHTML = mode + ' | ' + currentIndex + ': ' + currentSection.id;
+  if (currentSection) {
+    hudCurrent.innerHTML = mode + ' | ' + currentIndex + ': ' + currentSection.id;
+  }
   requestAnimationFrame(positionize);
 }
 requestAnimationFrame(positionize);

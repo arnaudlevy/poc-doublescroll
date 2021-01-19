@@ -61,6 +61,10 @@ function findMainIndex () {
   }
 }
 
+function findNavIndex () {
+  return Math.ceil(nav.scrollTop / 20);
+}
+
 function syncMain () {
   var position = 0;
   for (var i = 0; i < currentIndex - 1; i++) {
@@ -68,10 +72,6 @@ function syncMain () {
     position += section.clientHeight;
   }
   window.scrollTo(0, position);
-}
-
-function findNavIndex () {
-  return Math.ceil(nav.scrollTop / 20);
 }
 
 function syncNav() {
@@ -87,7 +87,9 @@ function positionize () {
     syncMain();
   }
   currentSection = sections[currentIndex];
-  hudCurrent.innerHTML = mode + ' | ' + currentIndex + ': ' + currentSection.id;
+  if (currentSection) {
+    hudCurrent.innerHTML = mode + ' | ' + currentIndex + ': ' + currentSection.id;
+  }
   requestAnimationFrame(positionize);
 }
 requestAnimationFrame(positionize);
